@@ -322,11 +322,19 @@ Linkable* Frame::doAction(ACTION_TYPE type, Linkable * p1, Linkable * p2, Linkab
 		gtemp->AddEdges(p3->GetEdges());
 
 		if (p2->getName()=="."){
-				Nodeset *nst = new Nodeset();
+				Graph *nst = new Graph();
 				nst->AddNodes(p1->GetNodes());
 				nst->AddNodes(p3->GetNodes());
-				nst->SetInputs(nst->GetNodes());
-				nst->SetOutputs(nst->GetNodes());
+				nst->AddEdges(p1->GetEdges());
+				nst->AddEdges(p3->GetEdges());
+				Nodeset n1;
+				n1.AddNodes(p1->GetInputs());
+				n1.AddNodes(p3->GetInputs());
+				nst->SetInputs(n1.GetNodes());
+				Nodeset n2;
+				n2.AddNodes(p1->GetOutputs());
+				n2.AddNodes(p3->GetOutputs());
+				nst->SetOutputs(n2.GetNodes());
 				p2 = nst;
 		}
 
