@@ -124,11 +124,11 @@ forktree:  fork_lchild  forkroot_hash  fork_rchild 		{	$$ = f->doAction(ACT_FORK
 mergetree: merge_lchild  mergeroot  merge_rchild		{	$$ = f->doAction(ACT_MERGE, $1,$2,$3, (Linkable *) ACT_FLAG_NO);	};
 mergetree: merge_lchild  mergeroot_hash  merge_rchild	{	$$ = f->doAction(ACT_MERGE, $1,$2,$3, (Linkable *) ACT_FLAG_HASH);	};
 
-forkroot: nodeline '{' 			{	$$=$1;	};
-forkroot_hash: nodeline '<'		{	$$=$1;	};
+forkroot: nodeline '{' 			{	$$=$1;	}; // fix that
+forkroot_hash: nodeline '<'		{	$$=$1;	}; //
 
-mergeroot: '}' nodeline 		{	$$=$2;	};
-mergeroot_hash: '>' nodeline 	{	$$=$2;	};
+mergeroot: '}' nodeline 		{	$$=$2;	}; // fix that
+mergeroot_hash: '>' nodeline 	{	$$=$2;	}; //
 		   
 		   
 connector: '^' TOK_ID '^'		{	$$ = f->doAction(ACT_CONNECTOR, $2,0,0,0);	}

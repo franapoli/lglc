@@ -7,7 +7,7 @@ extern FILE *fid;
 
 DIGIT    	[0-9]
 ALPHA 	 	[a-zA-Z_]
-TOKEN		[0-9a-zA-Z_]
+TOKEN		[0-9a-zA-Z_.]
 
 %%
 <INITIAL>{

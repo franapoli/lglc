@@ -19,7 +19,7 @@
 
 using namespace std;
 
-bool FRAME_DEBUG = 0;
+bool FRAME_DEBUG = 1;
 
 Frame::Frame() {
 	g=new Graph();
@@ -174,6 +174,10 @@ Linkable* Frame::doAction(ACTION_TYPE type, Linkable * p1, Linkable * p2, Linkab
 			realouts->AddNode(*(Node *)l);
 			outconnectors.push_back((const char *) p2);
 		}
+
+		if(l->getName()==".")
+			isold=true;
+
 		if(!isold){
 		symboltable.addSymbol(name, ss.str(), (Node *)l);
 		gtemp->AddNode(*(Node *)l);
@@ -260,16 +264,29 @@ Linkable* Frame::doAction(ACTION_TYPE type, Linkable * p1, Linkable * p2, Linkab
 			*p3 >> cout << endl;
 			}
 
+
 		gtemp->AddNodes(p1->GetNodes());
 		gtemp->AddNodes(p3->GetNodes());
-		gtemp->AddNodes(p3->GetNodes());
 		gtemp->AddEdges(p1->GetEdges());
-		gtemp->AddEdges(p2->GetEdges());
 		gtemp->AddEdges(p3->GetEdges());
-		gtemp->AddEdges(leaf::link(*p1, *p2));
-		gtemp->AddEdges(leaf::link(*p3, *p2));
-		gtemp->SetOutputs(p2->GetOutputs());
-		gtemp->SetInputs(p2->GetInputs());
+
+		if (p2->getName()=="."){
+				Nodeset *nst = new Nodeset();
+				nst->AddNodes(p1->GetNodes());
+				nst->AddNodes(p3->GetNodes());
+				nst->SetInputs(nst->GetNodes());
+				nst->SetOutputs(nst->GetNodes());
+				p2 = nst;
+		}
+
+		else {
+			gtemp->AddNodes(p2->GetNodes());
+			gtemp->AddEdges(p2->GetEdges());
+			gtemp->AddEdges(leaf::link(*p1, *p2));
+			gtemp->AddEdges(leaf::link(*p3, *p2));
+			gtemp->SetOutputs(p2->GetOutputs());
+			gtemp->SetInputs(p2->GetInputs());
+		}
 
 		if ((int) p4 == ACT_FLAG_HASH){
 			Nodeset &temp = p2->GetInputs();
@@ -281,7 +298,6 @@ Linkable* Frame::doAction(ACTION_TYPE type, Linkable * p1, Linkable * p2, Linkab
 			}
 		}
 
-
 		if(FRAME_DEBUG) cout << "result" << endl;
 		if(FRAME_DEBUG) *gtemp >> cout;
 
@@ -289,6 +305,7 @@ Linkable* Frame::doAction(ACTION_TYPE type, Linkable * p1, Linkable * p2, Linkab
 
 
 	case ACT_FORK:
+
 		if(FRAME_DEBUG)	{
 			cout << "Performing action FORK" << endl;
 			cout << "p1" << endl;
@@ -300,15 +317,28 @@ Linkable* Frame::doAction(ACTION_TYPE type, Linkable * p1, Linkable * p2, Linkab
 		}
 
 		gtemp->AddNodes(p1->GetNodes());
-		gtemp->AddNodes(p2->GetNodes());
 		gtemp->AddNodes(p3->GetNodes());
 		gtemp->AddEdges(p1->GetEdges());
-		gtemp->AddEdges(p2->GetEdges());
 		gtemp->AddEdges(p3->GetEdges());
-		gtemp->AddEdges(leaf::link(*p2, *p1));
-		gtemp->AddEdges(leaf::link(*p2, *p3));
-		gtemp->SetOutputs(p2->GetOutputs());
-		gtemp->SetInputs(p2->GetInputs());
+
+		if (p2->getName()=="."){
+				Nodeset *nst = new Nodeset();
+				nst->AddNodes(p1->GetNodes());
+				nst->AddNodes(p3->GetNodes());
+				nst->SetInputs(nst->GetNodes());
+				nst->SetOutputs(nst->GetNodes());
+				p2 = nst;
+		}
+
+
+		else {
+			gtemp->AddNodes(p2->GetNodes());
+			gtemp->AddEdges(p2->GetEdges());
+			gtemp->AddEdges(leaf::link(*p2, *p1));
+			gtemp->AddEdges(leaf::link(*p2, *p3));
+			gtemp->SetOutputs(p2->GetOutputs());
+			gtemp->SetInputs(p2->GetInputs());
+		}
 
 		if ((int) p4 == ACT_FLAG_HASH){
 
@@ -324,8 +354,10 @@ Linkable* Frame::doAction(ACTION_TYPE type, Linkable * p1, Linkable * p2, Linkab
 
 
 
-		if(FRAME_DEBUG) {cout << "result" << endl;
+		if(FRAME_DEBUG)
+			{cout << "result" << endl;
 			*gtemp >> cout;}
+
 		return p2;
 
 

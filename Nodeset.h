@@ -41,12 +41,13 @@ public:
 	void UpdateIds(){Nodeset::iterator i; for(i=begin();i!=end();i++)i->UpdateIds();}
 	void SetAttribute(unsigned, std::string s1, std::string s2);
 
-private:
 	Nodeset& GetOutputs(void)	{return *this;}
 	Nodeset& GetInputs(void)	{return *this;}
 	Nodeset& GetNodes(void) 	{return *this;}
 	void SetInputs(Nodeset &);
 	void SetOutputs(Nodeset &);
+
+private:
 	Nodeset& GetSources(void) 	{return *this;}
 	Nodeset& GetSinks(void) 	{return *this;}
 };
