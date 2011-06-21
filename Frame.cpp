@@ -19,7 +19,7 @@
 
 using namespace std;
 
-bool FRAME_DEBUG = 1;
+bool FRAME_DEBUG = 0;
 
 Frame::Frame() {
 	g=new Graph();
@@ -235,7 +235,7 @@ Linkable* Frame::doAction(ACTION_TYPE type, Linkable * p1, Linkable * p2, Linkab
 		gtemp->AddNodes(arrowgraph->GetNodes());
 		gtemp->AddEdges(arrowgraph->GetEdges());
 
-		if ((int) p3 == 2){ // hashing
+		if ((int) p3 != 2){ // hashing
 					Nodeset &temp = p2->GetOutputs();
 					Nodeset::iterator it;
 
