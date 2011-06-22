@@ -4,6 +4,7 @@
 extern FILE *fid;
 %}
 %s IN_COMMENT
+%option yylineno
 
 DIGIT    	[0-9]
 ALPHA 	 	[a-zA-Z_]

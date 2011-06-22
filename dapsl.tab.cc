@@ -80,14 +80,20 @@
 //#define YYPARSE_PARAM scanner
 //#define YYLEX_PARAM   scanner
 
-  inline	int yyerror(const char *s) {/*fprintf (stderr, "%s\n", s);*/ return 1;}
+  //inline	int yyerror(const char *s) {/*fprintf (stderr, "%s\n", s);*/ return 1;}
+	extern int yylineno;
+	extern const char * yytext;
+  void yyerror(char *s)
+      {
+            fprintf(stderr, "Around line %d -> %s at: %s\n", yylineno, s, yytext);
+      }
   void say(const char *s);
   int yylex(void);
 
 
 
 /* Line 189 of yacc.c  */
-#line 91 "dapsl.tab.cc"
+#line 97 "dapsl.tab.cc"
 
 /* Enabling traces.  */
 #ifndef YYDEBUG
@@ -138,7 +144,7 @@ typedef int YYSTYPE;
 
 
 /* Line 264 of yacc.c  */
-#line 142 "dapsl.tab.cc"
+#line 148 "dapsl.tab.cc"
 
 #ifdef short
 # undef short
@@ -448,13 +454,13 @@ static const yytype_int8 yyrhs[] =
 /* YYRLINE[YYN] -- source line where rule number YYN was defined.  */
 static const yytype_uint8 yyrline[] =
 {
-       0,    44,    44,    45,    48,    49,    50,    51,    52,    53,
-      54,    57,    57,    61,    62,    63,    67,    69,    71,    73,
-      76,    77,    78,    79,    82,    83,    84,    85,    86,    87,
-      91,    92,    93,    94,    97,    98,    99,   100,   103,   104,
-     105,   106,   107,   111,   112,   113,   114,   117,   118,   121,
-     122,   124,   125,   127,   128,   130,   131,   134,   137,   138,
-     141,   144,   147,   148,   150,   151
+       0,    50,    50,    51,    54,    55,    56,    57,    58,    59,
+      60,    63,    63,    67,    68,    69,    73,    75,    77,    79,
+      82,    83,    84,    85,    88,    89,    90,    91,    92,    93,
+      97,    98,    99,   100,   103,   104,   105,   106,   109,   110,
+     111,   112,   113,   117,   118,   119,   120,   123,   124,   127,
+     128,   130,   131,   133,   134,   136,   137,   140,   143,   144,
+     147,   150,   153,   154,   156,   157
 };
 #endif
 
@@ -1462,364 +1468,364 @@ yyreduce:
         case 4:
 
 /* Line 1455 of yacc.c  */
-#line 48 "dapsl.yy"
+#line 54 "dapsl.yy"
     {	(yyval) = f->doAction(ACT_DIAGRAM, (yyvsp[(2) - (3)]), 0, 0, 0);	;}
     break;
 
   case 5:
 
 /* Line 1455 of yacc.c  */
-#line 49 "dapsl.yy"
+#line 55 "dapsl.yy"
     {	(yyval) = f->doAction(ACT_DIAGRAM, (yyvsp[(1) - (2)]), 0, 0, 0);	;}
     break;
 
   case 6:
 
 /* Line 1455 of yacc.c  */
-#line 50 "dapsl.yy"
+#line 56 "dapsl.yy"
     {	(yyval) = f->doAction(ACT_DIAGRAM, (yyvsp[(2) - (3)]), 0, 0, 0);	;}
     break;
 
   case 7:
 
 /* Line 1455 of yacc.c  */
-#line 51 "dapsl.yy"
+#line 57 "dapsl.yy"
     {	(yyval) = f->doAction(ACT_DIAGRAM, (yyvsp[(1) - (2)]), 0, 0, 0);	;}
     break;
 
   case 8:
 
 /* Line 1455 of yacc.c  */
-#line 52 "dapsl.yy"
+#line 58 "dapsl.yy"
     {	(yyval) = f->doAction(ACT_DIAGRAM, (yyvsp[(2) - (3)]), 0, 0, 0);	;}
     break;
 
   case 9:
 
 /* Line 1455 of yacc.c  */
-#line 53 "dapsl.yy"
+#line 59 "dapsl.yy"
     {	(yyval) = f->doAction(ACT_DIAGRAM, (yyvsp[(1) - (2)]), 0, 0, 0);	;}
     break;
 
   case 11:
 
 /* Line 1455 of yacc.c  */
-#line 57 "dapsl.yy"
+#line 63 "dapsl.yy"
     { f->doAction(ACT_FUNCTDEF, (Linkable *)1, 0, 0, 0);;}
     break;
 
   case 12:
 
 /* Line 1455 of yacc.c  */
-#line 58 "dapsl.yy"
+#line 64 "dapsl.yy"
     { f->doAction(ACT_FUNCTDEF, (Linkable *)0, 0, 0, 0);;}
     break;
 
   case 13:
 
 /* Line 1455 of yacc.c  */
-#line 61 "dapsl.yy"
+#line 67 "dapsl.yy"
     {	(yyval) = f->doAction(ACT_NODE, (yyvsp[(1) - (1)]), 0, 0, 0);						;}
     break;
 
   case 14:
 
 /* Line 1455 of yacc.c  */
-#line 62 "dapsl.yy"
+#line 68 "dapsl.yy"
     {	(yyval) = f->doAction(ACT_NODE, (yyvsp[(1) - (1)]), 0, 0, 0);						;}
     break;
 
   case 15:
 
 /* Line 1455 of yacc.c  */
-#line 63 "dapsl.yy"
+#line 69 "dapsl.yy"
     {	(yyval) = f->doAction(ACT_REFERENCE, (yyvsp[(2) - (2)]), 0, 0, 0);					;}
     break;
 
   case 16:
 
 /* Line 1455 of yacc.c  */
-#line 67 "dapsl.yy"
+#line 73 "dapsl.yy"
     {	(yyval) = (yyvsp[(2) - (2)])	;}
     break;
 
   case 17:
 
 /* Line 1455 of yacc.c  */
-#line 69 "dapsl.yy"
+#line 75 "dapsl.yy"
     {	(yyval) = f->doAction(ACT_CHAINASFORKSON, (yyvsp[(2) - (2)]), 0, 0, 0);	;}
     break;
 
   case 18:
 
 /* Line 1455 of yacc.c  */
-#line 71 "dapsl.yy"
+#line 77 "dapsl.yy"
     {	(yyval) = (yyvsp[(1) - (2)])	;}
     break;
 
   case 19:
 
 /* Line 1455 of yacc.c  */
-#line 73 "dapsl.yy"
+#line 79 "dapsl.yy"
     {	(yyval) = (yyvsp[(1) - (2)])	;}
     break;
 
   case 21:
 
 /* Line 1455 of yacc.c  */
-#line 77 "dapsl.yy"
+#line 83 "dapsl.yy"
     {	(yyval) = f->doAction(ACT_NODE, (yyvsp[(2) - (2)]), (yyvsp[(1) - (2)]), 0, (Linkable *)1);			;}
     break;
 
   case 22:
 
 /* Line 1455 of yacc.c  */
-#line 78 "dapsl.yy"
+#line 84 "dapsl.yy"
     {	(yyval) = f->doAction(ACT_NODE, (yyvsp[(1) - (2)]), (yyvsp[(2) - (2)]), 0, (Linkable *)2);			;}
     break;
 
   case 23:
 
 /* Line 1455 of yacc.c  */
-#line 79 "dapsl.yy"
+#line 85 "dapsl.yy"
     {	(yyval) = f->doAction(ACT_COMMA, (yyvsp[(1) - (3)]), (yyvsp[(3) - (3)]), 0, 0);						;}
     break;
 
   case 24:
 
 /* Line 1455 of yacc.c  */
-#line 82 "dapsl.yy"
+#line 88 "dapsl.yy"
     {	(yyval) = f->doAction(ACT_GROUP, (yyvsp[(2) - (3)]), 0, 0, 0);	;}
     break;
 
   case 25:
 
 /* Line 1455 of yacc.c  */
-#line 83 "dapsl.yy"
+#line 89 "dapsl.yy"
     {	(yyval) = f->doAction(ACT_ARROW, (yyvsp[(1) - (3)]), (yyvsp[(3) - (3)]), 0, 0);						;}
     break;
 
   case 26:
 
 /* Line 1455 of yacc.c  */
-#line 84 "dapsl.yy"
+#line 90 "dapsl.yy"
     {	(yyval) = f->doAction(ACT_ARROW, (yyvsp[(3) - (3)]), (yyvsp[(1) - (3)]), 0, (Linkable *)1);			;}
     break;
 
   case 27:
 
 /* Line 1455 of yacc.c  */
-#line 85 "dapsl.yy"
+#line 91 "dapsl.yy"
     {	(yyval) = f->doAction(ACT_ARROW, (yyvsp[(1) - (3)]), (yyvsp[(3) - (3)]), (Linkable *)2, 0);						;}
     break;
 
   case 28:
 
 /* Line 1455 of yacc.c  */
-#line 86 "dapsl.yy"
+#line 92 "dapsl.yy"
     {	(yyval) = f->doAction(ACT_ARROW, (yyvsp[(3) - (3)]), (yyvsp[(1) - (3)]), (Linkable *)2, (Linkable *)1);			;}
     break;
 
   case 29:
 
 /* Line 1455 of yacc.c  */
-#line 87 "dapsl.yy"
+#line 93 "dapsl.yy"
     {	(yyval) = f->doAction(ACT_ARROW, (yyvsp[(3) - (3)]), (yyvsp[(1) - (3)]), (Linkable *)1, 0);			;}
     break;
 
   case 30:
 
 /* Line 1455 of yacc.c  */
-#line 91 "dapsl.yy"
+#line 97 "dapsl.yy"
     {	(yyval) = f->doAction(ACT_FORK, (yyvsp[(1) - (4)]),(yyvsp[(2) - (4)]),(yyvsp[(4) - (4)]),0);	;}
     break;
 
   case 31:
 
 /* Line 1455 of yacc.c  */
-#line 92 "dapsl.yy"
+#line 98 "dapsl.yy"
     {	(yyval) = f->doAction(ACT_FORK, (yyvsp[(1) - (4)]),(yyvsp[(2) - (4)]),(yyvsp[(4) - (4)]),(Linkable *) ACT_FLAG_HASH);	;}
     break;
 
   case 32:
 
 /* Line 1455 of yacc.c  */
-#line 93 "dapsl.yy"
+#line 99 "dapsl.yy"
     {	(yyval) = f->doAction(ACT_MERGE, (yyvsp[(1) - (3)]),(yyvsp[(2) - (3)]),(yyvsp[(1) - (3)]),0);	;}
     break;
 
   case 34:
 
 /* Line 1455 of yacc.c  */
-#line 97 "dapsl.yy"
+#line 103 "dapsl.yy"
     {	(yyval) = f->doAction(ACT_FORK, (yyvsp[(2) - (4)]),(yyvsp[(3) - (4)]),(yyvsp[(4) - (4)]), 0);	;}
     break;
 
   case 35:
 
 /* Line 1455 of yacc.c  */
-#line 98 "dapsl.yy"
+#line 104 "dapsl.yy"
     {	(yyval) = f->doAction(ACT_FORK, (yyvsp[(2) - (4)]),(yyvsp[(3) - (4)]),(yyvsp[(4) - (4)]), (Linkable *) ACT_FLAG_HASH);	;}
     break;
 
   case 36:
 
 /* Line 1455 of yacc.c  */
-#line 99 "dapsl.yy"
+#line 105 "dapsl.yy"
     {	(yyval) = f->doAction(ACT_MERGE, (yyvsp[(3) - (3)]),(yyvsp[(2) - (3)]),(yyvsp[(3) - (3)]),0);	;}
     break;
 
   case 38:
 
 /* Line 1455 of yacc.c  */
-#line 103 "dapsl.yy"
+#line 109 "dapsl.yy"
     {	(yyval) = f->doAction(ACT_FORK, (yyvsp[(1) - (3)]),(yyvsp[(2) - (3)]),(yyvsp[(1) - (3)]),0);	;}
     break;
 
   case 39:
 
 /* Line 1455 of yacc.c  */
-#line 104 "dapsl.yy"
+#line 110 "dapsl.yy"
     {	(yyval) = f->doAction(ACT_FORK, (yyvsp[(1) - (3)]),(yyvsp[(2) - (3)]),(yyvsp[(1) - (3)]),(Linkable *) ACT_FLAG_HASH);	;}
     break;
 
   case 40:
 
 /* Line 1455 of yacc.c  */
-#line 105 "dapsl.yy"
+#line 111 "dapsl.yy"
     {	(yyval) = f->doAction(ACT_MERGE, (yyvsp[(1) - (4)]),(yyvsp[(2) - (4)]),(yyvsp[(3) - (4)]),0);	;}
     break;
 
   case 41:
 
 /* Line 1455 of yacc.c  */
-#line 106 "dapsl.yy"
+#line 112 "dapsl.yy"
     {	(yyval) = f->doAction(ACT_MERGE, (yyvsp[(1) - (4)]),(yyvsp[(2) - (4)]),(yyvsp[(3) - (4)]),(Linkable *) ACT_FLAG_HASH);	;}
     break;
 
   case 43:
 
 /* Line 1455 of yacc.c  */
-#line 111 "dapsl.yy"
+#line 117 "dapsl.yy"
     {	(yyval) = f->doAction(ACT_FORK, (yyvsp[(3) - (3)]),(yyvsp[(2) - (3)]),(yyvsp[(3) - (3)]),0);		;}
     break;
 
   case 44:
 
 /* Line 1455 of yacc.c  */
-#line 112 "dapsl.yy"
+#line 118 "dapsl.yy"
     {	(yyval) = f->doAction(ACT_MERGE, (yyvsp[(1) - (4)]),(yyvsp[(3) - (4)]),(yyvsp[(4) - (4)]),0);	;}
     break;
 
   case 45:
 
 /* Line 1455 of yacc.c  */
-#line 113 "dapsl.yy"
+#line 119 "dapsl.yy"
     {	(yyval) = f->doAction(ACT_MERGE, (yyvsp[(1) - (4)]),(yyvsp[(3) - (4)]),(yyvsp[(4) - (4)]),(Linkable *) ACT_FLAG_HASH);	;}
     break;
 
   case 49:
 
 /* Line 1455 of yacc.c  */
-#line 121 "dapsl.yy"
+#line 127 "dapsl.yy"
     {	(yyval) = f->doAction(ACT_FORK, (yyvsp[(1) - (3)]),(yyvsp[(2) - (3)]),(yyvsp[(3) - (3)]), (Linkable *) ACT_FLAG_NO);		;}
     break;
 
   case 50:
 
 /* Line 1455 of yacc.c  */
-#line 122 "dapsl.yy"
+#line 128 "dapsl.yy"
     {	(yyval) = f->doAction(ACT_FORK, (yyvsp[(1) - (3)]),(yyvsp[(2) - (3)]),(yyvsp[(3) - (3)]), (Linkable *) ACT_FLAG_HASH);	;}
     break;
 
   case 51:
 
 /* Line 1455 of yacc.c  */
-#line 124 "dapsl.yy"
+#line 130 "dapsl.yy"
     {	(yyval) = f->doAction(ACT_MERGE, (yyvsp[(1) - (3)]),(yyvsp[(2) - (3)]),(yyvsp[(3) - (3)]), (Linkable *) ACT_FLAG_NO);	;}
     break;
 
   case 52:
 
 /* Line 1455 of yacc.c  */
-#line 125 "dapsl.yy"
+#line 131 "dapsl.yy"
     {	(yyval) = f->doAction(ACT_MERGE, (yyvsp[(1) - (3)]),(yyvsp[(2) - (3)]),(yyvsp[(3) - (3)]), (Linkable *) ACT_FLAG_HASH);	;}
     break;
 
   case 53:
 
 /* Line 1455 of yacc.c  */
-#line 127 "dapsl.yy"
+#line 133 "dapsl.yy"
     {	(yyval)=(yyvsp[(1) - (2)]);	;}
     break;
 
   case 54:
 
 /* Line 1455 of yacc.c  */
-#line 128 "dapsl.yy"
+#line 134 "dapsl.yy"
     {	(yyval)=(yyvsp[(1) - (2)]);	;}
     break;
 
   case 55:
 
 /* Line 1455 of yacc.c  */
-#line 130 "dapsl.yy"
+#line 136 "dapsl.yy"
     {	(yyval)=(yyvsp[(2) - (2)]);	;}
     break;
 
   case 56:
 
 /* Line 1455 of yacc.c  */
-#line 131 "dapsl.yy"
+#line 137 "dapsl.yy"
     {	(yyval)=(yyvsp[(2) - (2)]);	;}
     break;
 
   case 57:
 
 /* Line 1455 of yacc.c  */
-#line 134 "dapsl.yy"
+#line 140 "dapsl.yy"
     {	(yyval) = f->doAction(ACT_CONNECTOR, (yyvsp[(2) - (3)]),0,0,0);	;}
     break;
 
   case 58:
 
 /* Line 1455 of yacc.c  */
-#line 137 "dapsl.yy"
+#line 143 "dapsl.yy"
     { (yyval) = f->doAction(ACT_GRAPHNAME, (yyvsp[(1) - (2)]), 0, 0, 0);;}
     break;
 
   case 59:
 
 /* Line 1455 of yacc.c  */
-#line 138 "dapsl.yy"
+#line 144 "dapsl.yy"
     { (yyval) = f->doAction(ACT_GRAPHNAME, (yyvsp[(2) - (2)]), (yyvsp[(1) - (2)]), 0, 0);;}
     break;
 
   case 60:
 
 /* Line 1455 of yacc.c  */
-#line 141 "dapsl.yy"
+#line 147 "dapsl.yy"
     {	(yyval) = (yyvsp[(1) - (4)]);	;}
     break;
 
   case 64:
 
 /* Line 1455 of yacc.c  */
-#line 150 "dapsl.yy"
+#line 156 "dapsl.yy"
     {(yyval) = f->doAction(ACT_ATTRIBUTE, (yyvsp[(1) - (3)]), (yyvsp[(3) - (3)]), 0, 0);}
     break;
 
   case 65:
 
 /* Line 1455 of yacc.c  */
-#line 151 "dapsl.yy"
+#line 157 "dapsl.yy"
     {(yyval) = f->doAction(ACT_ATTRIBUTE, (Linkable*)"LEAF_FLAGS", (yyvsp[(1) - (1)]), 0, 0);}
     break;
 
 
 
 /* Line 1455 of yacc.c  */
-#line 1823 "dapsl.tab.cc"
+#line 1829 "dapsl.tab.cc"
       default: break;
     }
   YY_SYMBOL_PRINT ("-> $$ =", yyr1[yyn], &yyval, &yyloc);
@@ -2031,7 +2037,7 @@ yyreturn:
 
 
 /* Line 1675 of yacc.c  */
-#line 153 "dapsl.yy"
+#line 159 "dapsl.yy"
 
 
 

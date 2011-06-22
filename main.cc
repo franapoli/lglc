@@ -4,6 +4,7 @@
 #include "Frame.h"
 #include "CallStack.h"
 #include "Function.h"
+#include "lex.yy.hh"
 
 //#define DEBUG
 #define YYDEBUG 1
@@ -43,7 +44,7 @@ int main(int ARGC, char *ARGV[])
   try { res=(Graph *)&(cs.Run()); }
   catch(int)
 	  {
-	  fprintf(stderr, "Syntax Error: sorry, I'm a prototype compiler and don't know how to help you further :-(.\n");
+	  //fprintf(stderr, "Syntax Error: sorry, I'm a prototype compiler and don't know how to help you further :-(.\n");
 	  return(1);
 	  }
 

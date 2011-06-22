@@ -9,7 +9,13 @@
 //#define YYPARSE_PARAM scanner
 //#define YYLEX_PARAM   scanner
 
-  inline	int yyerror(const char *s) {/*fprintf (stderr, "%s\n", s);*/ return 1;}
+  //inline	int yyerror(const char *s) {/*fprintf (stderr, "%s\n", s);*/ return 1;}
+	extern int yylineno;
+	extern const char * yytext;
+  void yyerror(char *s)
+      {
+            fprintf(stderr, "Around line %d -> %s at: %s\n", yylineno, s, yytext);
+      }
   void say(const char *s);
   int yylex(void);
 
