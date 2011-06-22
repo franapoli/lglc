@@ -76,10 +76,20 @@ void AdjMatrix::toDot(Nodeset &Ns) {
     }
 
 
-    for (ii=0;ii<_n;++ii){              // process ARCs
+    for (ii=0, i=Ns.begin(); ii<_n; ++ii, ++i){              // process ARCs
         for (ij=0; ij<_m; ++ij) {
-        	if((*_mat)[ii][ij])
-                fprintf(fid, "%d->%d;\n", ii, ij);
+        	if((*_mat)[ii][ij]) {
+        		bool found = false;
+        		attribs = i->GetAttributes();
+				for(mapit = attribs.begin(); mapit!=attribs.end(); mapit++){
+					if(mapit->first == "LEAF_FLAGS" && mapit->second == "F") {
+		                fprintf(fid, "%d->%d [arrowhead = \"empty\"];\n", ii, ij);
+		                found = true;
+					}
+				}
+				if (!found)
+					fprintf(fid, "%d->%d;\n", ii, ij);
+        	}
         }
     }
     fprintf(fid, "}");
