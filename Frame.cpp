@@ -91,7 +91,7 @@ Linkable* Frame::doAction(ACTION_TYPE type, Linkable * p1, Linkable * p2, Linkab
 			if(FRAME_DEBUG) *l>>cout << endl;
 			return l;
 		}
-		else cerr << "Reference not found: " <<(const char *)p1;
+		else cerr << "Reference not found: " <<(const char *)p1 << endl;
 		exit(1);
 
 	case ACT_GRAPHNAME:

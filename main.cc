@@ -5,6 +5,7 @@
 #include "CallStack.h"
 #include "Function.h"
 #include "lex.yy.hh"
+#include "AdjMatrix.h"
 
 //#define DEBUG
 #define YYDEBUG 1
@@ -16,7 +17,7 @@ Environment &symboltable = *new Environment;
 Frame *f=new Frame;
 CallStack cs;
 const char *protname;
-
+AdjMatrix *adjmat;
 
 int main(int ARGC, char *ARGV[])
 {
@@ -44,12 +45,13 @@ int main(int ARGC, char *ARGV[])
   try { res=(Graph *)&(cs.Run()); }
   catch(int)
 	  {
-	  //fprintf(stderr, "Syntax Error: sorry, I'm a prototype compiler and don't know how to help you further :-(.\n");
 	  return(1);
 	  }
 
-	res->Visit();
-	fprintf(stdout, "Protocol correctly parsed.\n");
+
+	adjmat = &res->Visit();
+	adjmat->toDot(res->GetNodes(), "out.dot");
+	//fprintf(stdout, "Protocol correctly parsed.\n");
 	return 0;
 }
 

@@ -40,12 +40,12 @@ AdjMatrix::AdjMatrix(int n, int m) {
 		}
 }
 
-void AdjMatrix::toDot(Nodeset &Ns) {
+void AdjMatrix::toDot(Nodeset &Ns, string fname) {
 	FILE *fid;
 	Nodeset::iterator i;
 	Nodeset::iterator j;
 	int ii=0, ij=0;
-	fid=fopen((string(protname) + ".dot").c_str(), "w");
+	fid=fopen((string(fname)).c_str(), "w");
 	string attr_string="";
 	std::map<std::string, std::string>::iterator mapit;
 	std::map<std::string, std::string> attribs;

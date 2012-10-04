@@ -39,7 +39,7 @@ void Graph::Destroy(void)
 }
 
 
-void Graph::Visit(void)
+AdjMatrix &Graph::Visit(void)
 {
 Node i;
 Nodeset::iterator j;
@@ -80,7 +80,7 @@ while(!stack.empty()){
 
 }
 //adjmat >> cout;
-adjmat.toDot(GetNodes());
+return(adjmat);
 //cout << "dot made... all done!" << endl;
 
 }

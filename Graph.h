@@ -10,6 +10,7 @@
 
 #include "Nodeset.h"
 #include "Edgeset.h"
+#include "AdjMatrix.h"
 
 class Graph : public Linkable {
 
@@ -22,7 +23,7 @@ public:
 	void Destroy(void);
 	Nodeset& GetOutputs(void);
 	Nodeset& GetInputs(void);
-	void Visit(void);
+	AdjMatrix &Visit(void);
 	ostream& operator>>(std::ostream &);
 	Edgeset& GetEdges(void) {return _E;}
 	void AddEdges(Edgeset &e);
