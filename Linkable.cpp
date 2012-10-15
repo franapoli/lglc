@@ -30,6 +30,43 @@ void Linkable::setName(std::string _name)
 }
 
 
+void Linkable::SwitchEdgeIdOrder(Edgeset& e1, Edgeset& e2) {
+/*Make so that all ids in l1 will come after ids in l2. This is need
+ * to allow subtrees containing "->" to have edges with higher ids than
+ * the tree root.
+ * Reusing ids would be a good idea, but at the moment it is not necessary, so
+ * ids from e1 will just be shifted after e2.
+ * I'll just take care of preserving order in e2.
+ */
+
+	Edgeset::iterator i;
+	unsigned maxid=0;
+
+	for(i=e2.begin(); i!=e2.end(); i++)
+		if(i->getId()>maxid)
+			maxid=i->getId();
+		;
+
+	unsigned minid=-1;
+	for(i=e1.begin(); i!=e1.end(); i++)
+		if(i->getId()<minid)
+			minid=i->getId();
+		;
+
+	if(minid>maxid)
+		//nothing to be done
+		return;
+
+	unsigned diff;
+	diff = maxid-minid+1; //the +1 is probably not needed, but quite unharmful
+
+	Edgeset &mye = GetEdges();
+	for(i=mye.begin(); i!=mye.end(); i++)
+		if(e1.has(i->getSrcNodeId(), i->getDstNodeId()))
+			i->shiftId(diff);
+		;
+}
+
 Linkable *Linkable::_has(std::string s) {
 	std::vector<Linkable *>::iterator i=_linkables.begin();
 

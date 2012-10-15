@@ -49,8 +49,9 @@ int main(int ARGC, char *ARGV[])
 	  }
 
 
-	adjmat = &res->Visit();
-	adjmat->toDot(res->GetNodes(), "out.dot");
+  res->ToDot("out.dot");
+	//adjmat = &res->Visit();
+	//adjmat->toDot(res->GetNodes(), "out.dot");
 	//fprintf(stdout, "Protocol correctly parsed.\n");
 	return 0;
 }

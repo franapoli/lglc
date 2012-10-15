@@ -39,7 +39,7 @@ AdjMatrix::AdjMatrix(int n, int m) {
 			(*_mat)[i][j]=0;
 		}
 }
-
+/* THE FOLLOWING WORKS BUT NOW THE SAME IS DONE IN Graph.cpp
 void AdjMatrix::toDot(Nodeset &Ns, string fname) {
 	FILE *fid;
 	Nodeset::iterator i;
@@ -97,7 +97,7 @@ void AdjMatrix::toDot(Nodeset &Ns, string fname) {
 
 
 }
-
+*/
 void AdjMatrix::Set(unsigned i, unsigned j)
 {
 	(*_mat)[i][j]=1;

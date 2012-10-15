@@ -9,6 +9,7 @@
 #include <iostream> // JUST FOR DEBUG
 #include "Nodeset.h"
 
+class Graph;
 unsigned Node::_lastid=0;
 
 Node::Node() {
@@ -98,4 +99,10 @@ ostream& Node::operator>>(std::ostream &str)
 }
 
 
-Edgeset &Node::GetEdges(void){return *new Edgeset();}
+
+/* Design conflict?
+ * Node has no edge, but we need a GetEdges on a generic Linkable
+ */
+Edgeset &Node::GetEdges(void)
+{return *new Edgeset();}
+

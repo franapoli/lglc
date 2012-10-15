@@ -47,6 +47,7 @@ public:
 				void 			setName			(std::string _name);
 				std::string 	GetAttribute	(std::string s) {return _attributes[s];}
 				std::map<std::string, std::string>	GetAttributes() {return _attributes;}
+				void 			SwitchEdgeIdOrder(Edgeset &, Edgeset &);
 
 protected:
 	std::string			_name;

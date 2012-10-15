@@ -46,10 +46,22 @@ Edge &Edgeset::AddEdge(unsigned int id1, unsigned int id2)
 	return *e;
 }
 
-void Edgeset::AddEdges(Edgeset & es)
+Edge &Edgeset::AddEdge(unsigned int id1, unsigned int id2, unsigned id)
+{
+	Edge *e = new Edge(id1, id2, id);
+	if(!has(id1, id2) )
+		push_back(*e);
+	return *e;
+}
+
+
+void Edgeset::AddEdges(Edgeset & es, bool copyid)
 {
 	Edgeset::iterator i;
 	for(i=es.begin(); i!=es.end(); i++)
+		if(copyid)
+			AddEdge(i->getSrcNodeId(), i->getDstNodeId(), i->getId());
+		else
 			AddEdge(i->getSrcNodeId(), i->getDstNodeId());
 }
 

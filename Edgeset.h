@@ -23,7 +23,8 @@ public:
 	void AddEdge(Edge &);
 //	Edge & AddEdge(Node &, Node &);
 	Edge & AddEdge(unsigned int id1, unsigned int id2);
-	void AddEdges(Edgeset &);
+	Edge & AddEdge(unsigned int id1, unsigned int id2, unsigned id);
+	void AddEdges(Edgeset &, bool copyid=false);
 	//Nodeset &GetInNodes(Node &);
 	//Nodeset &GetOutNodes(Node &);
 	std::ostream & operator>>(std::ostream &str);

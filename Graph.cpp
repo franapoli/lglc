@@ -7,7 +7,8 @@
 
 #include "Graph.h"
 #include "AdjMatrix.h"
-
+#include "Linkable.h"
+#include <limits>
 
 Graph::Graph() {
 	// TODO Auto-generated constructor stub
@@ -28,9 +29,6 @@ void Graph::MergeWith(Graph & graph)
 }
 
 
-void Graph::FindNode(string string)
-{
-}
 
 
 
@@ -38,6 +36,76 @@ void Graph::Destroy(void)
 {
 }
 
+void Graph::ToDot(std::string fname)
+{
+	FILE *fid;
+	fid=fopen((string(fname)).c_str(), "w");
+	string attr_string="";
+	std::map<std::string, std::string>::iterator mapit;
+	std::map<std::string, std::string> attribs;
+
+    fprintf(fid, "digraph G {\n");
+    fprintf(fid, "node [shape=box, style=rounded];\n");
+    fprintf(fid, "rankdir=LR;\n");
+	Nodeset::iterator i,j;
+
+
+    for(i=_V.begin(); i!=_V.end(); ++i){
+    	attr_string = "[ label = ";
+    	attr_string += i->getName();
+
+    	attribs = i->GetAttributes();
+
+    	for(mapit = attribs.begin(); mapit!=attribs.end(); mapit++){
+    		attr_string += ", ";
+    		attr_string += (mapit -> first).c_str();
+			attr_string += " = ";
+			attr_string += (mapit -> second).c_str();
+    	}
+		attr_string += "] ";
+
+    		fprintf(fid, "%d %s;\n", i->getId(), attr_string.c_str());
+    		//fprintf(fid, "%d [ label = \"%s\", color = \"%s\" ];\n", i->getId(), i->getName().c_str(), i->GetAttribute("color").c_str());
+
+
+    }
+
+
+
+    // Sorting edges by id in O(n^2). This is good enough
+    // for small graphs.
+    Edgeset::iterator e;
+    unsigned minid, lastminid;
+    lastminid=0;
+    Edgeset::iterator minedge;
+    while(true){
+        minid = std::numeric_limits<unsigned>::max();
+    	for(e=_E.begin(); e!=_E.end(); e++)
+    		if(e->getId() < minid && e->getId() > lastminid){
+    			minid = e->getId();
+    			minedge = e;
+    		}
+    	if (minid==std::numeric_limits<unsigned>::max())
+    		break;
+    	lastminid=minid;
+    	fprintf(fid, "%d->%d [id=%u];\n", minedge->getSrcNodeId(), minedge->getDstNodeId(), minedge->getId());
+    }
+
+    fprintf(fid, "}");
+    fclose(fid);
+}
+
+
+Edge *Graph::findEdge(unsigned id1, unsigned id2)
+{
+	Edgeset::iterator i;
+
+	for(i=_E.begin(); i!=_E.end(); i++)
+		if(i->getSrcNodeId() == id1 && i->getDstNodeId() == id2)
+			return &*i;
+
+	return 0;
+}
 
 AdjMatrix &Graph::Visit(void)
 {
@@ -187,7 +255,8 @@ Nodeset& Graph::GetSources(void)
 
 Graph::operator Nodeset(){
 
-cerr << "unimplemented";
+cerr << "this was never tested! (Graph::operator Nodeset)";
+return _V;
 }
 
 void Graph::AddNode(Node &n){
@@ -195,19 +264,25 @@ void Graph::AddNode(Node &n){
 }
 
 
-void Graph::AddEdges(Edgeset &e)
+Edgeset &Graph::AddEdges(Edgeset &e, bool copyid)
 {
 	Node *n1, *n2;
 	Edgeset::iterator i;
-	Edge *ne;
+	Edgeset &newedges = *new Edgeset();
 
 	for(i = e.begin(); i<e.end(); i++) {
 		n1 = &_V.findNode(i->getSrcNodeId());
 		n2 = &_V.findNode(i->getDstNodeId());
-		ne=&_E.AddEdge(n1->getId(), n2->getId());
+		if(copyid)
+			newedges.push_back(_E.AddEdge(n1->getId(), n2->getId(), i->getId()));
+		else
+			newedges.push_back(_E.AddEdge(n1->getId(), n2->getId()));
+
 		n1->_issink=false;
 		n2->_issource=false;
 	}
+
+return newedges;
 }
 
 
@@ -236,4 +311,49 @@ void Graph::SetAttribute(std::string s1, std::string s2)
 	Nodeset::iterator i;
 	for(i=_V.begin(); i!=_V.end(); i++)
 		i->SetAttribute(s1, s2);
+}
+
+
+void Graph::resetVisited(void){
+	Nodeset::iterator i;
+	for(i=_V.begin(); i!=_V.end(); i++)
+		i->_visited=false;
+}
+
+/* Gets all edges in the subtree rooted in Node n. This is required
+ * to update edge ids while building the graph in Frame (ACT_FORK).
+ * This is partly copy-pasted from Visit (which is now unused).
+ */
+Edgeset& Graph::getEdgesRooted(Linkable& n)
+{
+	Node i;
+	Nodeset::iterator j;
+	Nodeset stack;
+	Edgeset &es=*new Edgeset;
+	unsigned edgeid;
+	Nodeset *ns;
+
+	resetVisited();
+
+	stack.AddNodes(n.GetNodes());
+	unsigned ij=0;
+
+	while(!stack.empty()){
+		i=stack.back();
+		stack.pop_back();
+
+		i.Visit();
+		ns=&GetOutNodes(i);
+
+		for(j=ns->begin(); j!=ns->end(); j++, ij++) {
+			if(!j->isVisited())
+				stack.AddNode(*j);
+			edgeid = findEdge(i.getId(), j->getId())->getId();
+			es.AddEdge(i.getId(),j->getId(),edgeid);
+		}
+
+	}
+
+	resetVisited();
+	return es;
 }

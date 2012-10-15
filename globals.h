@@ -10,6 +10,7 @@
 
 #include <stdio.h>
 #include <vector>
+#include <assert.h>
 
 extern const char *protname;
 extern FILE *yyin;

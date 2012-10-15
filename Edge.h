@@ -18,6 +18,7 @@ public:
 	Edge();
 	//Edge(Node &, Node &);
 	Edge(unsigned, unsigned);
+	Edge(unsigned id1, unsigned id2, unsigned eid);
 	virtual ~Edge();
 	std::ostream & operator>>(std::ostream &);
 	//Node & getSrcNode(void);
@@ -27,10 +28,14 @@ public:
 	unsigned int getDstNodeId(void){return _dstnodeid;}
 	void setSrcNodeId(unsigned id){_srcnodeid=id;}
 	void setDstNodeId(unsigned id){_dstnodeid=id;}
+	unsigned int getId(void){return _socketid;}
+	void shiftId(int s){_socketid+=s; if (_socketid>_lastsocketid) _lastsocketid=_socketid;}
 
 private:
 	unsigned int _srcnodeid;
 	unsigned int _dstnodeid;
+	unsigned int _socketid;
+	static unsigned int _lastsocketid;
 	bool _directed;
 
 };

@@ -145,7 +145,7 @@ Linkable* Frame::doAction(ACTION_TYPE type, Linkable * p1, Linkable * p2, Linkab
 			l2.UpdateIds();
 			symboltable.addSymbol(name, ss.str(), &l2);
 			gtemp->AddNodes(l2.GetNodes());
-			gtemp->AddEdges(l2.GetEdges());
+			gtemp->AddEdges(l2.GetEdges(), true);
 			if(FRAME_DEBUG) cout << "Result:" << endl;
 			if(FRAME_DEBUG) l2 >> cout << endl;
 			l=&l2;
@@ -218,10 +218,10 @@ Linkable* Frame::doAction(ACTION_TYPE type, Linkable * p1, Linkable * p2, Linkab
 
 		arrowgraph->AddNodes(p1->GetNodes());
 		arrowgraph->AddNodes(p2->GetNodes());
-		arrowgraph->AddEdges(p1->GetEdges());
-		arrowgraph->AddEdges(p2->GetEdges());
+		arrowgraph->AddEdges(p1->GetEdges(), true);
+		arrowgraph->AddEdges(p2->GetEdges(), true);
 
-		arrowgraph->AddEdges(leaf::link(*p1, *p2));
+		arrowgraph->AddEdges(leaf::link(*p1, *p2), true);
 
 		if(!p4) {
 			arrowgraph->SetOutputs(p2->GetOutputs());
@@ -233,7 +233,7 @@ Linkable* Frame::doAction(ACTION_TYPE type, Linkable * p1, Linkable * p2, Linkab
 			arrowgraph->SetOutputs(p1->GetInputs());
 		}
 		gtemp->AddNodes(arrowgraph->GetNodes());
-		gtemp->AddEdges(arrowgraph->GetEdges());
+		gtemp->AddEdges(arrowgraph->GetEdges(), true);
 
 		if ((int) p3 != 2){ // hashing
 					Nodeset &temp = p2->GetOutputs();
@@ -341,9 +341,11 @@ Linkable* Frame::doAction(ACTION_TYPE type, Linkable * p1, Linkable * p2, Linkab
 
 		else {
 			gtemp->AddNodes(p2->GetNodes());
-			gtemp->AddEdges(p2->GetEdges());
-			gtemp->AddEdges(leaf::link(*p2, *p1));
-			gtemp->AddEdges(leaf::link(*p2, *p3));
+			gtemp->AddEdges(p2->GetEdges(), true);
+			gtemp->AddEdges(leaf::link(*p2, *p1), true);
+			Edgeset &es1 = leaf::link(*p2, *p3);
+			gtemp->AddEdges(es1, true);
+			gtemp->SwitchEdgeIdOrder(gtemp->getEdgesRooted(*p3), es1);
 			gtemp->SetOutputs(p2->GetOutputs());
 			gtemp->SetInputs(p2->GetInputs());
 		}
@@ -410,7 +412,7 @@ Linkable* Frame::doAction(ACTION_TYPE type, Linkable * p1, Linkable * p2, Linkab
 		if(FRAME_DEBUG) *gtemp >> cout;
 
 		g->AddNodes(gtemp->GetNodes());
-		g->AddEdges(gtemp->GetEdges());
+		g->AddEdges(gtemp->GetEdges(), true);
 
 		gtemp = new Graph;
 		return gtemp;
