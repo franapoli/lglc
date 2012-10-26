@@ -12,44 +12,56 @@
 #include "Edgeset.h"
 #include "AdjMatrix.h"
 
-class Graph : public Linkable {
+class Graph: public Linkable {
 
 public:
 	Graph();
 	Graph(Nodeset &, Edgeset&);
 	virtual ~Graph();
-	void 			MergeWith(Graph &);
-	void 			Destroy(void);
-	Nodeset& 		GetOutputs(void);
-	Nodeset& 		GetInputs(void);
-	AdjMatrix&		Visit(void);
-	ostream& 		operator>>(std::ostream &);
-	Edgeset& 		GetEdges(void) {return _E;}
-	Edgeset&		AddEdges(Edgeset &e, bool copyid=false);
-	void 			AddNodes(Nodeset &e) {_V.AddNodes(e);}
-	Nodeset& 		GetNodes(void) {return _V;}
-	void 			SetInputs(Nodeset &);
-	void 			SetOutputs(Nodeset &);
-	Nodeset& 		GetSources(void);
-	Nodeset& 		GetSinks(void);
+	void mergeWith(Graph &);
+	void destroy(void);
+	Nodeset& getOutputs(void);
+	Nodeset& getInputs(void);
+	AdjMatrix& visit(void);
+	ostream& operator>>(std::ostream &);
+	Edgeset& getEdges(void) {
+		return _E;
+	}
+	Edgeset& addEdges(Edgeset &e, bool copyid = false);
+	void addNodes(Nodeset &e) {
+		_V.addNodes(e);
+	}
+	Nodeset& getNodes(void) {
+		return _V;
+	}
+	void setInputs(Nodeset &);
+	void setOutputs(Nodeset &);
+	Nodeset& getSources(void);
+	Nodeset& getSinks(void);
 	virtual operator Nodeset();
-	void 			AddNode(Node &);
-	Node&			findNode(unsigned id){return _V.findNode(id);}
-	Nodeset&		GetOutNodes(Node &);
-	virtual Linkable &Clone(){Graph &g=*new Graph; g = *this; return g;}
-	void 			UpdateIds();
-	void 			SetAttribute(std::string s1, std::string s2);
-	void 			SetAttribute(unsigned n, std::string s1, std::string s2){_V.SetAttribute(n,s1,s2);}
-	void 			ToDot(std::string fname);
-	Edge*			findEdge(unsigned id1, unsigned id2);
-	Edgeset&		getEdgesRooted(Linkable&);
-	void			resetVisited(void);
+	void addNode(Node &);
+	Node& findNode(unsigned id) {
+		return _V.findNode(id);
+	}
+	Nodeset& getOutNodes(Node &);
+	virtual Linkable &clone() {
+		Graph &g = *new Graph;
+		g = *this;
+		return g;
+	}
+	void updateIds();
+	void setAttribute(std::string s1, std::string s2);
+	void setAttribute(unsigned n, std::string s1, std::string s2) {
+		_V.setAttribute(n, s1, s2);
+	}
+	void toDot(std::string fname);
+	Edge* findEdge(unsigned id1, unsigned id2);
+	Edgeset& getEdgesRooted(Linkable&);
+	void resetVisited(void);
 
 private:
-	Edgeset  _E;
-	Nodeset  _V;
+	Edgeset _E;
+	Nodeset _V;
 };
-
-
 
 #endif /* GRAPH_H_ */

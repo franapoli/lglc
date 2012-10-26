@@ -14,7 +14,7 @@
 
 class Nodeset;
 class Edge;
-class Edgeset : public vector<Edge>{
+class Edgeset: public vector<Edge> {
 	friend class Graph;
 public:
 	Edgeset();
@@ -24,7 +24,7 @@ public:
 //	Edge & AddEdge(Node &, Node &);
 	Edge & AddEdge(unsigned int id1, unsigned int id2);
 	Edge & AddEdge(unsigned int id1, unsigned int id2, unsigned id);
-	void AddEdges(Edgeset &, bool copyid=false);
+	void AddEdges(Edgeset &, bool copyid = false);
 	//Nodeset &GetInNodes(Node &);
 	//Nodeset &GetOutNodes(Node &);
 	std::ostream & operator>>(std::ostream &str);

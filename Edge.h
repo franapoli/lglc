@@ -10,7 +10,6 @@
 
 #include "Node.h"
 
-
 class Edge {
 	friend class Edgeset;
 
@@ -24,12 +23,26 @@ public:
 	//Node & getSrcNode(void);
 	//Node & getDstNode(void);
 
-	unsigned int getSrcNodeId(void){return _srcnodeid;}
-	unsigned int getDstNodeId(void){return _dstnodeid;}
-	void setSrcNodeId(unsigned id){_srcnodeid=id;}
-	void setDstNodeId(unsigned id){_dstnodeid=id;}
-	unsigned int getId(void){return _socketid;}
-	void shiftId(int s){_socketid+=s; if (_socketid>_lastsocketid) _lastsocketid=_socketid;}
+	unsigned int getSrcNodeId(void) {
+		return _srcnodeid;
+	}
+	unsigned int getDstNodeId(void) {
+		return _dstnodeid;
+	}
+	void setSrcNodeId(unsigned id) {
+		_srcnodeid = id;
+	}
+	void setDstNodeId(unsigned id) {
+		_dstnodeid = id;
+	}
+	unsigned int getId(void) {
+		return _socketid;
+	}
+	void shiftId(int s) {
+		_socketid += s;
+		if (_socketid > _lastsocketid)
+			_lastsocketid = _socketid;
+	}
 
 private:
 	unsigned int _srcnodeid;
@@ -39,7 +52,5 @@ private:
 	bool _directed;
 
 };
-
-
 
 #endif /* EDGE_H_ */

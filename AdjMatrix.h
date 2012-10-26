@@ -16,9 +16,11 @@ public:
 	AdjMatrix();
 	virtual ~AdjMatrix();
 	AdjMatrix(int n, int m);
-	int *&operator[](unsigned i) {return *_mat[i];}
+	int *&operator[](unsigned i) {
+		return *_mat[i];
+	}
 	//void toDot(Nodeset &ns, string fname);
-	void Set(unsigned, unsigned);
+	void set(unsigned, unsigned);
 	ostream& operator>>(std::ostream &);
 
 private:

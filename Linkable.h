@@ -15,54 +15,59 @@
 #include <map>
 
 enum LINK_TYPE {
-	LINK_DIRECTED,
-	LINK_UNDIRECTED
+	LINK_DIRECTED, LINK_UNDIRECTED
 };
 
 class Node;
 class Nodeset;
 class Edgeset;
 
-
 class Linkable {
 	friend class Byname;
 
 public:
-								Linkable		();
-	virtual 					~Linkable		();
-	virtual		Nodeset& 		GetOutputs		(void)=0;
-	virtual		Nodeset& 		GetInputs		(void)=0;
-	virtual		Nodeset& 		GetNodes		(void)=0;
-	virtual		void 			SetInputs		(Nodeset &)=0;
-	virtual		void 			SetOutputs		(Nodeset &)=0;
-	virtual		Nodeset& 		GetSources		(void)=0;
-	virtual		Nodeset& 		GetSinks		(void)=0;
-	virtual		std::ostream & 	operator>> 		(std::ostream &)=0;
-	virtual		Edgeset &		GetEdges		(void)=0;
-	virtual		Linkable &		Clone			()=0;
-	virtual		void 			UpdateIds		()=0;
-	virtual		void 			SetAttribute	(std::string s1, std::string s2) {_attributes[s1]=s2;}
-	virtual		void 			SetAttribute	(unsigned, std::string s1, std::string s2)=0;
-				std::string 	getName			() const {return _name;}
-				void 			setName			(std::string _name);
-				std::string 	GetAttribute	(std::string s) {return _attributes[s];}
-				std::map<std::string, std::string>	GetAttributes() {return _attributes;}
-				void 			SwitchEdgeIdOrder(Edgeset &, Edgeset &);
+	Linkable();
+	virtual ~Linkable();
+	virtual Nodeset& getOutputs(void)=0;
+	virtual Nodeset& getInputs(void)=0;
+	virtual Nodeset& getNodes(void)=0;
+	virtual void setInputs(Nodeset &)=0;
+	virtual void setOutputs(Nodeset &)=0;
+	virtual Nodeset& getSources(void)=0;
+	virtual Nodeset& getSinks(void)=0;
+	virtual std::ostream & operator>>(std::ostream &)=0;
+	virtual Edgeset & getEdges(void)=0;
+	virtual Linkable & clone()=0;
+	virtual void updateIds()=0;
+	virtual void setAttribute(std::string s1, std::string s2) {
+		_attributes[s1] = s2;
+	}
+	virtual void setAttribute(unsigned, std::string s1, std::string s2)=0;
+	std::string getName() const {
+		return _name;
+	}
+	void setName(std::string _name);
+	std::string getAttribute(std::string s) {
+		return _attributes[s];
+	}
+	std::map<std::string, std::string> GetAttributes() {
+		return _attributes;
+	}
+	void switchEdgeIdOrder(Edgeset &, Edgeset &);
 
 protected:
-	std::string			_name;
+	std::string _name;
 	std::map<std::string, std::string> _attributes;
 
 private:
 	static std::vector<Linkable *> _linkables;
-	Linkable *_has(std::string s);
+	Linkable *has(std::string s);
 };
 
 namespace leaf {
-	Edgeset& link(Linkable&, Linkable&);
-	Edgeset& ulink(Linkable&, Linkable&);
-	Nodeset& merge(Linkable&, Linkable&);
+Edgeset& link(Linkable&, Linkable&);
+Edgeset& ulink(Linkable&, Linkable&);
+Nodeset& merge(Linkable&, Linkable&);
 }
-
 
 #endif /* LINKABLE_H_ */

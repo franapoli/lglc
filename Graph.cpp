@@ -19,337 +19,304 @@ Graph::~Graph() {
 	// TODO Auto-generated destructor stub
 }
 
-Graph::Graph(Nodeset &n, Edgeset&e){
-_E.AddEdges(e);
-_V.AddNodes(n);
+Graph::Graph(Nodeset &n, Edgeset&e) {
+	_E.AddEdges(e);
+	_V.addNodes(n);
 }
 
-void Graph::MergeWith(Graph & graph)
-{
+void Graph::mergeWith(Graph & graph) {
 }
 
-
-
-
-
-void Graph::Destroy(void)
-{
+void Graph::destroy(void) {
 }
 
-void Graph::ToDot(std::string fname)
-{
+void Graph::toDot(std::string fname) {
 	FILE *fid;
-	fid=fopen((string(fname)).c_str(), "w");
-	string attr_string="";
+	fid = fopen((string(fname)).c_str(), "w");
+	string attr_string = "";
 	std::map<std::string, std::string>::iterator mapit;
 	std::map<std::string, std::string> attribs;
 
-    fprintf(fid, "digraph G {\n");
-    fprintf(fid, "node [shape=box, style=rounded];\n");
-    fprintf(fid, "rankdir=LR;\n");
-	Nodeset::iterator i,j;
+	fprintf(fid, "digraph G {\n");
+	fprintf(fid, "node [shape=box, style=rounded];\n");
+	fprintf(fid, "rankdir=LR;\n");
+	Nodeset::iterator i, j;
 
+	for (i = _V.begin(); i != _V.end(); ++i) {
+		attr_string = "[ label = ";
+		attr_string += i->getName();
 
-    for(i=_V.begin(); i!=_V.end(); ++i){
-    	attr_string = "[ label = ";
-    	attr_string += i->getName();
+		attribs = i->GetAttributes();
 
-    	attribs = i->GetAttributes();
-
-    	for(mapit = attribs.begin(); mapit!=attribs.end(); mapit++){
-    		attr_string += ", ";
-    		attr_string += (mapit -> first).c_str();
+		for (mapit = attribs.begin(); mapit != attribs.end(); mapit++) {
+			attr_string += ", ";
+			attr_string += (mapit->first).c_str();
 			attr_string += " = ";
-			attr_string += (mapit -> second).c_str();
-    	}
+			attr_string += (mapit->second).c_str();
+		}
 		attr_string += "] ";
 
-    		fprintf(fid, "%d %s;\n", i->getId(), attr_string.c_str());
-    		//fprintf(fid, "%d [ label = \"%s\", color = \"%s\" ];\n", i->getId(), i->getName().c_str(), i->GetAttribute("color").c_str());
+		fprintf(fid, "%d %s;\n", i->getId(), attr_string.c_str());
+		//fprintf(fid, "%d [ label = \"%s\", color = \"%s\" ];\n", i->getId(), i->getName().c_str(), i->GetAttribute("color").c_str());
 
+	}
 
-    }
+	// Sorting edges by id in O(n^2). This is good enough
+	// for small graphs.
+	Edgeset::iterator e;
+	unsigned minid, lastminid;
+	lastminid = 0;
+	Edgeset::iterator minedge;
+	while (true) {
+		minid = std::numeric_limits<unsigned>::max();
+		for (e = _E.begin(); e != _E.end(); e++)
+			if (e->getId() < minid && e->getId() > lastminid) {
+				minid = e->getId();
+				minedge = e;
+			}
+		if (minid == std::numeric_limits<unsigned>::max())
+			break;
+		lastminid = minid;
+		fprintf(fid, "%d->%d [id=%u];\n", minedge->getSrcNodeId(),
+				minedge->getDstNodeId(), minedge->getId());
+	}
 
-
-
-    // Sorting edges by id in O(n^2). This is good enough
-    // for small graphs.
-    Edgeset::iterator e;
-    unsigned minid, lastminid;
-    lastminid=0;
-    Edgeset::iterator minedge;
-    while(true){
-        minid = std::numeric_limits<unsigned>::max();
-    	for(e=_E.begin(); e!=_E.end(); e++)
-    		if(e->getId() < minid && e->getId() > lastminid){
-    			minid = e->getId();
-    			minedge = e;
-    		}
-    	if (minid==std::numeric_limits<unsigned>::max())
-    		break;
-    	lastminid=minid;
-    	fprintf(fid, "%d->%d [id=%u];\n", minedge->getSrcNodeId(), minedge->getDstNodeId(), minedge->getId());
-    }
-
-    fprintf(fid, "}");
-    fclose(fid);
+	fprintf(fid, "}");
+	fclose(fid);
 }
 
-
-Edge *Graph::findEdge(unsigned id1, unsigned id2)
-{
+Edge *Graph::findEdge(unsigned id1, unsigned id2) {
 	Edgeset::iterator i;
 
-	for(i=_E.begin(); i!=_E.end(); i++)
-		if(i->getSrcNodeId() == id1 && i->getDstNodeId() == id2)
+	for (i = _E.begin(); i != _E.end(); i++)
+		if (i->getSrcNodeId() == id1 && i->getDstNodeId() == id2)
 			return &*i;
 
 	return 0;
 }
 
-AdjMatrix &Graph::Visit(void)
-{
-Node i;
-Nodeset::iterator j;
-Nodeset stack;
+AdjMatrix &Graph::visit(void) {
+	Node i;
+	Nodeset::iterator j;
+	Nodeset stack;
 
-Nodeset *ns;
+	Nodeset *ns;
 
-unsigned maxid=0;
-Nodeset::iterator ni;
-for(ni=_V.begin();ni!=_V.end();ni++)
-	if(ni->getId() > maxid)
-		maxid=ni->getId();
+	unsigned maxid = 0;
+	Nodeset::iterator ni;
+	for (ni = _V.begin(); ni != _V.end(); ni++)
+		if (ni->getId() > maxid)
+			maxid = ni->getId();
 
-AdjMatrix &adjmat = *new AdjMatrix(maxid+1, maxid+1);
+	AdjMatrix &adjmat = *new AdjMatrix(maxid + 1, maxid + 1);
 
-stack.AddNodes(GetSources());
+	stack.addNodes(getSources());
 //cout <<endl << "Visiting " << getName() << endl;
-unsigned ij=0;
+	unsigned ij = 0;
 
-while(!stack.empty()){
-	i=stack.back();
-	//i >> cout << endl;
-	stack.pop_back();
+	while (!stack.empty()) {
+		i = stack.back();
+		//i >> cout << endl;
+		stack.pop_back();
 
-	_V.findNode(i.getId()).Visit();
-	ns=&GetOutNodes(i);
-	//i >> cout;
-	//cout << " ha figli:" << endl;
-	//*ns >> cout;
+		_V.findNode(i.getId()).visit();
+		ns = &getOutNodes(i);
+		//i >> cout;
+		//cout << " ha figli:" << endl;
+		//*ns >> cout;
 
-	for(j=ns->begin(); j!=ns->end(); j++, ij++) {
-		if(!j->isVisited()) {
-			stack.AddNode(*j);
-		}
-			adjmat.Set(i.getId(), j->getId());
+		for (j = ns->begin(); j != ns->end(); j++, ij++) {
+			if (!j->isVisited()) {
+				stack.addNode(*j);
+			}
+			adjmat.set(i.getId(), j->getId());
 			//cout << "Added (" << i.getId() << ", " << j->getId() << ")"<<endl;
-	}
+		}
 
-}
+	}
 //adjmat >> cout;
-return(adjmat);
+	return (adjmat);
 //cout << "dot made... all done!" << endl;
 
 }
 
-ostream& Graph::operator>>(std::ostream &str){
+ostream& Graph::operator>>(std::ostream &str) {
 	str << "Graph(" << _name << ")" << endl << "{" << endl;
-		_V >> (str);
-		_E >> (str);
-		str << "}"<< endl;
-		return str;
+	_V >> (str);
+	_E >> (str);
+	str << "}" << endl;
+	return str;
 }
 
-
-void Graph::SetInputs(Nodeset &in)
-{
+void Graph::setInputs(Nodeset &in) {
 	Nodeset::iterator i;
 
-	for (i=_V.begin(); i!=_V.end(); ++i)
-		if(in.has(i->getId())){
+	for (i = _V.begin(); i != _V.end(); ++i)
+		if (in.has(i->getId())) {
 			i->setIsinput(true);
 			i->setInConnector(in.findNode(i->getId()).getInConnector());
-		}
-		else i->setIsinput(false);
+		} else
+			i->setIsinput(false);
 }
 
-
-void Graph::SetOutputs(Nodeset &o)
-{
+void Graph::setOutputs(Nodeset &o) {
 	Nodeset::iterator i;
 
-	for (i=_V.begin(); i!=_V.end(); ++i)
-		if(o.has(i->getId())) {
+	for (i = _V.begin(); i != _V.end(); ++i)
+		if (o.has(i->getId())) {
 			i->setIsoutput(true);
 			i->setOutConnector(o.findNode(i->getId()).getOutConnector());
-		}
-		else i->setIsoutput(false);
+		} else
+			i->setIsoutput(false);
 }
 
-
-Nodeset& Graph::GetInputs(void)
-{
+Nodeset& Graph::getInputs(void) {
 	Nodeset *ns = new Nodeset;
 	Nodeset::iterator i;
 
-	for (i=_V.begin(); i!=_V.end(); ++i){
-		if(i->getIsinput())
-			ns->AddNode(*i);
+	for (i = _V.begin(); i != _V.end(); ++i) {
+		if (i->getIsinput())
+			ns->addNode(*i);
 	}
 
 	return *ns;
 }
 
-Nodeset& Graph::GetOutputs(void)
-{
+Nodeset& Graph::getOutputs(void) {
 	Nodeset *ns = new Nodeset;
 	Nodeset::iterator i;
 
-	for (i=_V.begin(); i!=_V.end(); ++i){
-		if(i->getIsoutput())
-			ns->AddNode(*i);
+	for (i = _V.begin(); i != _V.end(); ++i) {
+		if (i->getIsoutput())
+			ns->addNode(*i);
 	}
 
 	return *ns;
 }
 
-Nodeset& Graph::GetSinks(void)
-{
+Nodeset& Graph::getSinks(void) {
 	Nodeset &ns = (*new Nodeset());
 	Nodeset::iterator i;
 
-	for (i=_V.begin(); i!=_V.end(); ++i){
-		if(i->isSink())
+	for (i = _V.begin(); i != _V.end(); ++i) {
+		if (i->isSink())
 			ns.push_back(*i);
 	}
 	return ns;
 }
 
-
-
-
-Nodeset &Graph::GetOutNodes(Node &n){
+Nodeset &Graph::getOutNodes(Node &n) {
 	Nodeset &ns = *new Nodeset;
 	Edgeset::iterator i;
 
-	for(i=_E.begin(); i!=_E.end(); i++)
-		if(i->getSrcNodeId()==n.getId())
+	for (i = _E.begin(); i != _E.end(); i++)
+		if (i->getSrcNodeId() == n.getId())
 			ns.push_back(_V.findNode(i->getDstNodeId()));
 	return ns;
 }
 
-
-
-Nodeset& Graph::GetSources(void)
-{
+Nodeset& Graph::getSources(void) {
 	Nodeset &ns = (*new Nodeset());
 	Nodeset::iterator i;
 
-	for (i=_V.begin(); i!=_V.end(); ++i){
-		if(i->isSource())
+	for (i = _V.begin(); i != _V.end(); ++i) {
+		if (i->isSource())
 			ns.push_back(*i);
 	}
 	return ns;
 }
 
-Graph::operator Nodeset(){
+Graph::operator Nodeset() {
 
-cerr << "this was never tested! (Graph::operator Nodeset)";
-return _V;
+	cerr << "this was never tested! (Graph::operator Nodeset)";
+	return _V;
 }
 
-void Graph::AddNode(Node &n){
-	_V.AddNode(n);
+void Graph::addNode(Node &n) {
+	_V.addNode(n);
 }
 
-
-Edgeset &Graph::AddEdges(Edgeset &e, bool copyid)
-{
+Edgeset &Graph::addEdges(Edgeset &e, bool copyid) {
 	Node *n1, *n2;
 	Edgeset::iterator i;
 	Edgeset &newedges = *new Edgeset();
 
-	for(i = e.begin(); i<e.end(); i++) {
+	for (i = e.begin(); i < e.end(); i++) {
 		n1 = &_V.findNode(i->getSrcNodeId());
 		n2 = &_V.findNode(i->getDstNodeId());
-		if(copyid)
-			newedges.push_back(_E.AddEdge(n1->getId(), n2->getId(), i->getId()));
+		if (copyid)
+			newedges.push_back(
+					_E.AddEdge(n1->getId(), n2->getId(), i->getId()));
 		else
 			newedges.push_back(_E.AddEdge(n1->getId(), n2->getId()));
 
-		n1->_issink=false;
-		n2->_issource=false;
+		n1->_issink = false;
+		n2->_issource = false;
 	}
 
-return newedges;
+	return newedges;
 }
 
+void Graph::updateIds() {
+	Nodeset::iterator i;
+	Edgeset::iterator e;
+	unsigned id;
 
-void Graph::UpdateIds()
-{
-Nodeset::iterator i;
-Edgeset::iterator e;
-unsigned id;
+	for (i = _V.begin(); i != _V.end(); i++) {
+		id = Node::newId();
 
-for(i=_V.begin(); i!=_V.end(); i++){
-	id = Node::newId();
-
-	for(e=_E.begin(); e!=_E.end(); e++){
-		if(e->getSrcNodeId() == i->getId())
-			e->setSrcNodeId(id);
-		if(e->getDstNodeId() == i->getId())
-			e->setDstNodeId(id);
+		for (e = _E.begin(); e != _E.end(); e++) {
+			if (e->getSrcNodeId() == i->getId())
+				e->setSrcNodeId(id);
+			if (e->getDstNodeId() == i->getId())
+				e->setDstNodeId(id);
+		}
+		i->setId(id);
 	}
-i->setId(id);
-}
 }
 
-void Graph::SetAttribute(std::string s1, std::string s2)
-{
-	Linkable::SetAttribute(s1,s2);
+void Graph::setAttribute(std::string s1, std::string s2) {
+	Linkable::setAttribute(s1, s2);
 	Nodeset::iterator i;
-	for(i=_V.begin(); i!=_V.end(); i++)
-		i->SetAttribute(s1, s2);
+	for (i = _V.begin(); i != _V.end(); i++)
+		i->setAttribute(s1, s2);
 }
 
-
-void Graph::resetVisited(void){
+void Graph::resetVisited(void) {
 	Nodeset::iterator i;
-	for(i=_V.begin(); i!=_V.end(); i++)
-		i->_visited=false;
+	for (i = _V.begin(); i != _V.end(); i++)
+		i->_visited = false;
 }
 
 /* Gets all edges in the subtree rooted in Node n. This is required
  * to update edge ids while building the graph in Frame (ACT_FORK).
  * This is partly copy-pasted from Visit (which is now unused).
  */
-Edgeset& Graph::getEdgesRooted(Linkable& n)
-{
+Edgeset& Graph::getEdgesRooted(Linkable& n) {
 	Node i;
 	Nodeset::iterator j;
 	Nodeset stack;
-	Edgeset &es=*new Edgeset;
+	Edgeset &es = *new Edgeset;
 	unsigned edgeid;
 	Nodeset *ns;
 
 	resetVisited();
 
-	stack.AddNodes(n.GetNodes());
-	unsigned ij=0;
+	stack.addNodes(n.getNodes());
+	unsigned ij = 0;
 
-	while(!stack.empty()){
-		i=stack.back();
+	while (!stack.empty()) {
+		i = stack.back();
 		stack.pop_back();
 
-		i.Visit();
-		ns=&GetOutNodes(i);
+		i.visit();
+		ns = &getOutNodes(i);
 
-		for(j=ns->begin(); j!=ns->end(); j++, ij++) {
-			if(!j->isVisited())
-				stack.AddNode(*j);
+		for (j = ns->begin(); j != ns->end(); j++, ij++) {
+			if (!j->isVisited())
+				stack.addNode(*j);
 			edgeid = findEdge(i.getId(), j->getId())->getId();
-			es.AddEdge(i.getId(),j->getId(),edgeid);
+			es.AddEdge(i.getId(), j->getId(), edgeid);
 		}
 
 	}

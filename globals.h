@@ -25,26 +25,21 @@ typedef enum ACTION_TYPE {
 	ACT_FORK,
 	ACT_DIAGRAM,
 	ACT_GRAPHNAME,
-	ACT_GETGRAPH,
 	ACT_REFERENCE,
-	ACT_FINAL,
 	ACT_CHAINASFORKSON,
 	ACT_CONNECTOR,
 	ACT_ATTRIBUTE,
 	ACT_FUNCTDEF,
 	ACT_GROUP
-}ACTION_TYPE;
+} ACTION_TYPE;
 
 enum ACTION_FLAG {
-	ACT_FLAG_NO,
-	ACT_FLAG_HASH
+	ACT_FLAG_NO, ACT_FLAG_HASH
 };
-
 
 extern class Graph *g;
 extern class Environment &symboltable;
 extern class Frame *f;
 extern class CallStack cs;
-
 
 #endif /* GLOBALS_H_ */

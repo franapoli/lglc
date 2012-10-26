@@ -1,4 +1,3 @@
-
 #include "Graph.h"
 #include "Environment.h"
 #include "Frame.h"
@@ -11,45 +10,43 @@
 #define YYDEBUG 1
 extern int yydebug;
 
-FILE *fid=0;
+FILE *fid = 0;
 
 Environment &symboltable = *new Environment;
-Frame *f=new Frame;
+Frame *f = new Frame;
 CallStack cs;
 const char *protname;
 AdjMatrix *adjmat;
 
-int main(int ARGC, char *ARGV[])
-{
+int main(int ARGC, char *ARGV[]) {
 	Graph *res;
 	f->setEnv(symboltable);
 
-  yydebug=0;
+	yydebug = 0;
 
-  if(ARGC<2){
-	  fprintf(stderr, "No protocol to parse\n");
-	  return 1;
-  }
+	if (ARGC < 2) {
+		fprintf(stderr, "No protocol to parse\n");
+		return 1;
+	}
 
-  fid=fopen(ARGV[1], "r");
-  protname = ARGV[1];
+	fid = fopen(ARGV[1], "r");
+	protname = ARGV[1];
 
-  if(!fid){
-	  fprintf(stderr, "Error opening protocol file: %s\n", ARGV[1]);
-	  return 1;
-  }
+	if (!fid) {
+		fprintf(stderr, "Error opening protocol file: %s\n", ARGV[1]);
+		return 1;
+	}
 
-  f->setStream(fid);
-  cs.push(*f);
+	f->setStream(fid);
+	cs.push(*f);
 
-  try { res=(Graph *)&(cs.Run()); }
-  catch(int)
-	  {
-	  return(1);
-	  }
+	try {
+		res = (Graph *) &(cs.Run());
+	} catch (int) {
+		return (1);
+	}
 
-
-  res->ToDot("out.dot");
+	res->toDot("out.dot");
 	//adjmat = &res->Visit();
 	//adjmat->toDot(res->GetNodes(), "out.dot");
 	//fprintf(stdout, "Protocol correctly parsed.\n");

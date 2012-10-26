@@ -12,11 +12,15 @@
 #include <stack>
 #include "Linkable.h"
 
-class CallStack : public std::stack<Frame>{
+class CallStack: public std::stack<Frame> {
 public:
 	CallStack();
 	virtual ~CallStack();
-	Linkable &Run(void) {Linkable &g = top().Run(); pop(); return g;}
+	Linkable &Run(void) {
+		Linkable &g = top().run();
+		pop();
+		return g;
+	}
 };
 
 #endif /* CALLSTACK_H_ */

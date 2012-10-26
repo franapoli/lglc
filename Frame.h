@@ -20,21 +20,22 @@ class Frame {
 public:
 	Frame();
 	virtual ~Frame();
-    Environment const& getEnv() const
-    {
-        return _env;
-    }
+	Environment const& getEnv() const {
+		return _env;
+	}
 
-    void setEnv(Environment _env)
-    {
-        this->_env = _env;
-    }
+	void setEnv(Environment _env) {
+		this->_env = _env;
+	}
 
-    Linkable* doAction(ACTION_TYPE type, Linkable *, Linkable *, Linkable *, Linkable *);
+	Linkable* doAction(ACTION_TYPE type, Linkable *, Linkable *, Linkable *,
+			Linkable *);
 
-    Linkable &Run(void);
+	Linkable &run(void);
 
-    void setStream(FILE *fid) {_fid = fid;}
+	void setStream(FILE *fid) {
+		_fid = fid;
+	}
 
 private:
 	Environment _env;
