@@ -1,0 +1,27 @@
+
+A Makefile can be generated using cmake (you need to install cmake if
+you don't have it already).
+
+In order to create the Makefile:
+
+   > cd build
+   > cmake ..
+
+Then to build lglc:
+
+   > make
+
+Or to install it:
+
+   > make install
+
+Once installed, test lglc by issuing the following command from the
+samples directory:
+
+   > lglc test.lf
+
+You should get a file named test.lf.dot. If you have Graphviz
+installed (http://www.graphviz.org), you can obtain a pdf graph
+visualization:
+
+   > dot test.lf.dot -o test.pdf

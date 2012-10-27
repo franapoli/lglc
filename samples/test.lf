@@ -1,0 +1,173 @@
+     /0,10
+   .<
+  /  \1,4
+2<
+  \   /3->@0
+   @4<
+      \5->@1,@10
+;
+
+/*
+LogR_BAF_FileName[F] -> prepareInput[F];  
+
+                  /getSampleNames
+                 |  -> CNVboolVects,
+                 |     exportDistMats [F],
+                 |     intersMat_genes,
+                 |     exportIntersMat_genes [F],
+                 |     exportCNVDiffMat [F],
+                 |     clustergram [F],
+                 |     distMatGfx [F],
+                 |     CNVDiffMat,
+                 |     countCNVlenghts,
+                 |     exportToCircos,
+                 |     intersectRegs,
+                 |     intersectTBRegs
+ sampleSheet[F] <
+                  \               /genoTypeCheck
+                   @prepareInput <
+                                  \                          /makeBed [F]
+                                   PennCNV[F]               |                    
+                                      -> joinPennCNVout[F] <
+                                                            \
+                                                            |                               /exportPerRegion [F]
+                                                            |                              |  -> @exportToCircos
+                                                            |                   reformat2 <
+                                                            |                /             \ @countCNVlenghts
+                                                            |                |              |   -> exportCNVlenghts [F],
+                                                            |                |              |      exportFigCNVlenghts [F]
+                                                             addGeneInfo[F]  |
+                                                                -> readFile <
+                                                                             \             
+                                                                              |              /getGeneNames
+                                                                              |             |  -> @intersMat_genes,
+                                                                              |             |     @clustergram,
+                                                                              |             |     @exportIntersMat_genes,
+                                                                              |             |     @CNVDiffMat,
+                                                                              |             |     @exportCNVDiffMat
+                                                                               manualClean <
+                                                                                             \   /@intersectRegs
+                                                                                              | |   -> 
+                                                                                              | |      exportMergedRegs [F]
+                                                                                              .<                      
+                                                                                                \
+                                                                                                 |                    /exportMergedRegsTB [F]
+                                                                                                 |   @intersectTBRegs<
+                                                                                                 | /                  \mergeFragments
+                                                                                                 | |                   |  -> exportMergedFragments [F],
+                                                                                                 | |                   |     exportFigExtRegs [F]  
+                                                                                                 .<
+                                                                                                   \            
+                                                                                                    |             /exportPerRegion_clean [F]
+                                                                                                    |           .<
+                                                                                                    |          /  \CompareRegionAndGenes
+                                                                                                    |         |     -> exportComRegGen [F]
+                                                                                                    reformat <
+                                                                                                              \           /@intersMat_genes 
+                                                                                                               |         |  -> @exportIntersMat_genes
+                                                                                                               addStats <
+                                                                                                                         \                 /@exportCNVDiffMat,
+                                                                                                                         |                |  @clustergram
+                                                                                                                         |   @CNVDiffMat <
+                                                                                                                         |  /             \ computeFisher
+                                                                                                                         | |               |  -> @clustergram,
+                                                                                                                         | |               |     @exportCNVDiffMat 
+                                                                                                                         .< 
+                                                                                                                           \  /@exportCNVDiffMat
+                                                                                                                            .< 
+                                                                                                                              \             
+                                                                                                                              |                /@intersMat_genes
+                                                                                                                              |               | -> @exportIntersMat_genes
+                                                                                                                               @CNVboolVects <                 
+                                                                                                                                              \ samplesDistMats
+                                                                                                                                               |  -> @exportDistMats,
+                                                                                                                                               |     @distMatGfx
+;
+*/
+
+/*
+
+                                /MDS
+                              .<
+                             /  \Boxplot             
+                           .<
+                          /   \  /HClustering -> PlotHClust
+                         |     .<
+                         |       \Kmeans -> PlotClust
+  irisdata -> Normalize <
+                         \       /@PlotClust
+                          labels< 
+                                 \@PlotHClust
+;
+
+*/
+
+/*
+[color = limegreen] adenine:
+                   /N ^2^ -> C -> N -> C1        
+H,H ^1^ <- N -> C <                    
+                   \   /@C1
+                    C <
+                       \N -> C -> ^4^ N ->@C1
+;
+
+
+
+[color = mediumpurple] guanine:
+             /N -> C2
+           C<
+          /  \C3 -> ^4^ N -> @C2
+O ^6^ ->C<
+          \  /H ^7^       
+           N<   
+             \  /N -> @C3
+              C<
+                \N->H,H ^8^                
+;
+
+
+
+[color = orchid] thymine:
+               /^4^ N1
+             C<
+            /  \O 
+          N<
+         /  \^2^ H
+^1^ O->C<
+         \  /C
+          C<
+            \C-> @N1
+;
+
+
+[color = salmon] cytosine:
+                           /^8^ O
+                  ^7^ N->C<
+                 /         \^4^ N1
+^6^ H,H <- N ->C< 
+                 \C -> C -> @N1
+;
+
+
+
+[color = gray90] nucleotide:
+               /O2
+   C1 ^4^ ->C2<
+  /            \H2   
+O<
+  \   /O->P->O,^5^O,O^5^
+   C4<     
+      \   /@C2
+       C3<
+          \O3
+;
+          
+
+
+@nucleotide	->	@adenine;
+nucleotide	->	@cytosine;
+nucleotide	->	@thymine;
+nucleotide	->	@guanine;
+@adenine	->	@thymine;
+@guanine	->	@cytosine;
+*/
