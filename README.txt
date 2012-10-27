@@ -5,7 +5,7 @@ This is README.txt file for lglc source package. lglc (Leaf Graph
 Language Compiler) is a compiler for the LGL language whose target
 code is a subset of the DOT language (http://www.graphviz.org). The
 LGL language is an ASCII-ART based graph definition language, whose
-aim is to code graph structures in a readable way. Here is an exmaple:
+aim is to code graph structures in a readable way. Here is an example:
 
         /C
 A -> B <
