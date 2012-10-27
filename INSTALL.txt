@@ -1,8 +1,11 @@
 
+BUILDING AND INSTALLING lglc
+
 A Makefile can be generated using cmake (you need to install cmake if
 you don't have it already).
 
-In order to create the Makefile:
+In order to create the Makefile starting from the root directory of
+this package:
 
    > cd build
    > cmake ..
@@ -22,6 +25,7 @@ samples directory:
 
 You should get a file named test.lf.dot. If you have Graphviz
 installed (http://www.graphviz.org), you can obtain a pdf graph
-visualization:
+visualization this way:
 
    > dot test.lf.dot -o test.pdf
+
