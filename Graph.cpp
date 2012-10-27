@@ -20,7 +20,7 @@ Graph::~Graph() {
 }
 
 Graph::Graph(Nodeset &n, Edgeset&e) {
-	_E.AddEdges(e);
+	_E.addEdges(e);
 	_V.addNodes(n);
 }
 
@@ -33,6 +33,10 @@ void Graph::destroy(void) {
 void Graph::toDot(std::string fname) {
 	FILE *fid;
 	fid = fopen((string(fname)).c_str(), "w");
+	if (!fid) {
+		fprintf(stderr, "%s", "Error opening output file.\n");
+		throw 1;
+	}
 	string attr_string = "";
 	std::map<std::string, std::string>::iterator mapit;
 	std::map<std::string, std::string> attribs;
@@ -81,7 +85,7 @@ void Graph::toDot(std::string fname) {
 				minedge->getDstNodeId(), minedge->getId());
 	}
 
-	fprintf(fid, "}");
+	fprintf(fid, "}\n");
 	fclose(fid);
 }
 
@@ -246,9 +250,9 @@ Edgeset &Graph::addEdges(Edgeset &e, bool copyid) {
 		n2 = &_V.findNode(i->getDstNodeId());
 		if (copyid)
 			newedges.push_back(
-					_E.AddEdge(n1->getId(), n2->getId(), i->getId()));
+					_E.addEdge(n1->getId(), n2->getId(), i->getId()));
 		else
-			newedges.push_back(_E.AddEdge(n1->getId(), n2->getId()));
+			newedges.push_back(_E.addEdge(n1->getId(), n2->getId()));
 
 		n1->_issink = false;
 		n2->_issource = false;
@@ -316,7 +320,7 @@ Edgeset& Graph::getEdgesRooted(Linkable& n) {
 			if (!j->isVisited())
 				stack.addNode(*j);
 			edgeid = findEdge(i.getId(), j->getId())->getId();
-			es.AddEdge(i.getId(), j->getId(), edgeid);
+			es.addEdge(i.getId(), j->getId(), edgeid);
 		}
 
 	}

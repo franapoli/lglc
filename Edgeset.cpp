@@ -19,7 +19,7 @@ Edgeset::Edgeset(Nodeset & ns1, Nodeset & ns2) {
 
 	for (i = ns1.begin(); i != ns1.end(); i++)
 		for (j = ns2.begin(); j != ns2.end(); j++)
-			AddEdge(i->getId(), j->getId());
+			addEdge(i->getId(), j->getId());
 }
 
 Edgeset::~Edgeset() {
@@ -33,27 +33,27 @@ Edgeset::~Edgeset() {
  return *e;
  }*/
 
-Edge &Edgeset::AddEdge(unsigned int id1, unsigned int id2) {
+Edge &Edgeset::addEdge(unsigned int id1, unsigned int id2) {
 	Edge *e = new Edge(id1, id2);
 	if (!has(id1, id2))
 		push_back(*e);
 	return *e;
 }
 
-Edge &Edgeset::AddEdge(unsigned int id1, unsigned int id2, unsigned id) {
+Edge &Edgeset::addEdge(unsigned int id1, unsigned int id2, unsigned id) {
 	Edge *e = new Edge(id1, id2, id);
 	if (!has(id1, id2))
 		push_back(*e);
 	return *e;
 }
 
-void Edgeset::AddEdges(Edgeset & es, bool copyid) {
+void Edgeset::addEdges(Edgeset & es, bool copyid) {
 	Edgeset::iterator i;
 	for (i = es.begin(); i != es.end(); i++)
 		if (copyid)
-			AddEdge(i->getSrcNodeId(), i->getDstNodeId(), i->getId());
+			addEdge(i->getSrcNodeId(), i->getDstNodeId(), i->getId());
 		else
-			AddEdge(i->getSrcNodeId(), i->getDstNodeId());
+			addEdge(i->getSrcNodeId(), i->getDstNodeId());
 }
 
 /*Nodeset & Edgeset::GetOutNodes(Node & node)

@@ -16,6 +16,7 @@
 #include "Nodeset.h"
 #include "Environment.h"
 #include <typeinfo>
+#include <stdint.h>
 
 using namespace std;
 
@@ -50,7 +51,7 @@ Linkable* Frame::doAction(ACTION_TYPE type, Linkable * p1, Linkable * p2,
 	static unsigned int groupid = 0;
 
 	if (suspend_actions) {
-		if ((int) p1 == 0 && type == ACT_FUNCTDEF) {
+		if ((uintptr_t) p1 == 0 && type == ACT_FUNCTDEF) {
 			suspend_actions = false;
 			if (FRAME_DEBUG)
 				cout << "Re-enabling actions" << endl;
@@ -66,7 +67,7 @@ Linkable* Frame::doAction(ACTION_TYPE type, Linkable * p1, Linkable * p2,
 		return (Linkable *) attr;
 
 	case ACT_FUNCTDEF:
-		if ((int) p1 == 1) {
+		if ((uintptr_t) p1 == 1) {
 			suspend_actions = true;
 			if (FRAME_DEBUG)
 				cout << "Suspending actions" << endl;
@@ -97,7 +98,7 @@ Linkable* Frame::doAction(ACTION_TYPE type, Linkable * p1, Linkable * p2,
 	case ACT_GRAPHNAME:
 		name = (const char *) p1;
 		symboltable.addNameSpace(name, *new NameSpace);
-		if ((int) p2)
+		if ((uintptr_t) p2)
 			attribs.push_back(
 					pair<string, string>(((pair<string, string>*) p2)->first,
 							((pair<string, string>*) p2)->second));
@@ -167,13 +168,13 @@ Linkable* Frame::doAction(ACTION_TYPE type, Linkable * p1, Linkable * p2,
 			attribs.clear();
 		}
 
-		if ((int) p4 == 1) {
+		if ((uintptr_t) p4 == 1) {
 			if (!realins)
 				realins = new Nodeset;
 			realins->addNode(*(Node *) l);
 			inconnectors.push_back((const char *) p2);
 		}
-		if ((int) p4 == 2) {
+		if ((uintptr_t) p4 == 2) {
 			if (!realouts)
 				realouts = new Nodeset;
 			realouts->addNode(*(Node *) l);
@@ -242,7 +243,7 @@ Linkable* Frame::doAction(ACTION_TYPE type, Linkable * p1, Linkable * p2,
 		gtemp->addNodes(arrowgraph->getNodes());
 		gtemp->addEdges(arrowgraph->getEdges(), true);
 
-		if ((int) p3 != 2) { // hashing
+		if ((uintptr_t) p3 != 2) { // hashing
 			Nodeset &temp = p2->getOutputs();
 			Nodeset::iterator it;
 
@@ -293,7 +294,7 @@ Linkable* Frame::doAction(ACTION_TYPE type, Linkable * p1, Linkable * p2,
 			gtemp->setInputs(p2->getInputs());
 		}
 
-		if ((int) p4 == ACT_FLAG_HASH) {
+		if ((uintptr_t) p4 == ACT_FLAG_HASH) {
 			Nodeset &temp = p2->getInputs();
 			Nodeset::iterator it;
 
@@ -355,7 +356,7 @@ Linkable* Frame::doAction(ACTION_TYPE type, Linkable * p1, Linkable * p2,
 			gtemp->setInputs(p2->getInputs());
 		}
 
-		if ((int) p4 == ACT_FLAG_HASH) {
+		if ((uintptr_t) p4 == ACT_FLAG_HASH) {
 
 			Nodeset &temp = p2->getOutputs();
 			Nodeset::iterator it;

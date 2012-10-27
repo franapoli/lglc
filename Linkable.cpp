@@ -111,12 +111,12 @@ Edgeset & link(Linkable & l1, Linkable & l2) {
 		for (dbiter = dbo.begin(); dbiter != dbo.end(); dbiter++) {
 			found = dbi.find(dbiter->first);
 			if (found != dbi.end())
-				E->AddEdges(*new Edgeset(dbiter->second, found->second));
+				E->addEdges(*new Edgeset(dbiter->second, found->second));
 		}
 	}
 
 	else
-		E->AddEdges(*new Edgeset(l1.getOutputs(), l2.getInputs()));
+		E->addEdges(*new Edgeset(l1.getOutputs(), l2.getInputs()));
 
 	return *E;
 }
@@ -125,7 +125,7 @@ Edgeset& ulink(Linkable & l1, Linkable & l2) {
 	Edgeset& e1 = (*new Edgeset(l1.getOutputs(), l2.getInputs()));
 	Edgeset& e2 = (*new Edgeset(l2.getOutputs(), l1.getInputs()));
 
-	e1.AddEdges(e2);
+	e1.addEdges(e2);
 	e2.~Edgeset();
 
 	return e1;

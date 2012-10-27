@@ -25,14 +25,14 @@ public:
 	}
 
 	Linkable *getSymbol(std::string symbol) {
-		return _namespaces.find("global")->second->GetObject(symbol);
+		return _namespaces.find("global")->second->getObject(symbol);
 	}
 	Linkable *getSymbol(std::string space, std::string symbol) {
-		Linkable *l = _namespaces.find(space)->second->GetObject(symbol);
+		Linkable *l = _namespaces.find(space)->second->getObject(symbol);
 		if (l)
 			return l;
 		else
-			return _namespaces.find("global")->second->GetObject(symbol);
+			return _namespaces.find("global")->second->getObject(symbol);
 	}
 
 private:

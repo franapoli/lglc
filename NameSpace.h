@@ -26,7 +26,7 @@ public:
 	bool HasSymbol(std::string s) {
 		return !(_symvalues.find(s) == _symvalues.end());
 	}
-	Linkable *GetObject(std::string s);
+	Linkable *getObject(std::string s);
 	std::ostream& operator>>(std::ostream &);
 	std::string getName() const {
 		return _name;

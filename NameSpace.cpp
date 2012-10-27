@@ -17,7 +17,7 @@ NameSpace::~NameSpace() {
 	// TODO Auto-generated destructor stub
 }
 
-Linkable *NameSpace::GetObject(std::string s) {
+Linkable *NameSpace::getObject(std::string s) {
 	std::map<std::string, Linkable *>::iterator i;
 	i = _symvalues.find(s);
 	if (i == _symvalues.end())
