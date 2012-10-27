@@ -14,7 +14,8 @@ Then to build lglc:
 
    > make
 
-Or to install it:
+Or to install it (make sure you have proper permissions - aka root -
+to do this):
 
    > make install
 
@@ -27,5 +28,5 @@ You should get a file named test.lf.dot. If you have Graphviz
 installed (http://www.graphviz.org), you can obtain a pdf graph
 visualization this way:
 
-   > dot test.lf.dot -o test.pdf
+   > dot -Tpdf test.lf.dot -o test.pdf
 
