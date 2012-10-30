@@ -15,6 +15,7 @@
 #include "Function.h"
 #include "lglc.yy.hh"
 #include "AdjMatrix.h"
+#include <stdlib.h> //atoi
 
 //#define DEBUG
 #define YYDEBUG 1
@@ -27,12 +28,16 @@ Frame *f = new Frame;
 CallStack cs;
 const char *protname;
 AdjMatrix *adjmat;
+unsigned erroroffset=0;
 
-const char *helptext =
-		"\
+const char *helptext ="\
 Usage: lglc [options] file\n\
 Options:\n\
-  -o: output file name\n";
+  -h: show this help\n\
+  -o: specify output file name\n\
+  -v: print version information\n\
+  -l: error line number offset\n\n\
+  ";
 
 void say(const char *string, bool iserr = true) {
 	char outs[100] = "\0";
@@ -53,7 +58,7 @@ int main(int argc, char *argv[]) {
 
 	opterr = 0;
 
-	while ((c = getopt(argc, argv, "hvo:")) != -1)
+	while ((c = getopt(argc, argv, "hvol:")) != -1)
 		switch (c) {
 		case 'v':
 			sprintf(text, "%s Version %d.%d\n", "Leaf Graph Language Compiler",
@@ -67,8 +72,11 @@ int main(int argc, char *argv[]) {
 		case 'o':
 			sprintf(ofile, "%s", optarg);
 			break;
+		case 'l':
+		  yylineno += atoi(optarg);
+		  break;
 		case '?':
-			if (optopt == 'o') {
+			if (optopt == 'o' || optopt == 'l') {
 				sprintf(text, "option -%c requires an argument.\n", optopt);
 				say(text, false);
 				return 0;
