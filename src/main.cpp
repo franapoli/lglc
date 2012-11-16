@@ -37,7 +37,7 @@ Options:\n\
   -o: specify output file name\n\
   -v: print version information\n\
   -l: error line number offset\n\n\
-  ";
+";
 
 void say(const char *string, bool iserr = true) {
 	char outs[100] = "\0";
@@ -64,6 +64,7 @@ int main(int argc, char *argv[]) {
 			sprintf(text, "%s Version %d.%d\n", "Leaf Graph Language Compiler",
 					0, 1);
 			say(text, false);
+			return 0;
 			break;
 		case 'h':
 			fprintf(stdout, "%s", helptext);
