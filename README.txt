@@ -1,6 +1,6 @@
 
 NOTE: Windows and Linux precompiled binaries can now be found at
-http://www.francesconapolitano.it/downloads.
+http://www.francesconapolitano.it/leaf/downloads.
 
 This is README.txt file for lglc source package. lglc (Leaf Graph
 Language Compiler) is a compiler for the LGL language whose target
